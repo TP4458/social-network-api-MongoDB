@@ -38,11 +38,11 @@ const UserSchema = new Schema(
   }
 );
 
-//friend count
+//virtual to display friend count
 UserSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
 
 const Users = model('Users', UserSchema);
 
-module.exports.Users;
+module.exports = Users;
