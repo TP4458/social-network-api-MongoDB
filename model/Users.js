@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const { userInfo } = require('os');
 const { isEmail } = require('validator');
 
 const UserSchema = new Schema(
