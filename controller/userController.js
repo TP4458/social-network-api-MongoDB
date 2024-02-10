@@ -67,7 +67,23 @@ const userControllers = {
       .catch((err) => res.json(err));
   },
 
-  addFriend({ parms }, res) {},
+  addFriend({ parms }, res) {
+    Users.findByIdAndUpdate(
+      { _id: params.id },
+      { $push: { friends: params.friendId } },
+      { new: true }
+    )
+      .populate({ path: 'friends', select: '__v:0' })
+      .select('-__v')
+      .then((dbUsersData) => {
+        if (!dbUsersData) {
+          res.status(404).json({ message: 'No user found with this ID' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => res.json(err));
+  },
 
   deleteFriend({ params }, res) {},
 }; //END BRACKET
