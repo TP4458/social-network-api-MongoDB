@@ -5,6 +5,7 @@ const userControllers = {
   //GET all users:
   getAllUsers(req, res) {
     Users.find({})
+      //.populate to get entire collection back
       .populate({ path: 'thoughts', select: '__v:0' })
       .populate({ path: 'friends', select: '__v:0' })
       .select('-__v')
@@ -16,6 +17,7 @@ const userControllers = {
   },
   getOneUser(req, res) {
     Users.findOne({ _id: req.params.id })
+      //.populate to get entire collection back
       .populate({ path: 'thoughts', select: '__v:0' })
       .populate({ path: 'friends', select: '__v:0' })
       .select('-__v')
@@ -36,6 +38,21 @@ const userControllers = {
     Users.create(body)
       .then((dbUsersData) => res.json(dbUsersData))
       .catch((err) => res.status(400).json(err));
+  },
+
+  updateUser({ params, body }, res) {
+    Users.findOneAndUpdate({ _id: params.id }, body, {
+      new: true,
+      runValidators: true,
+    })
+      .then((dbUsersData) => {
+        if (!dbUsersData) {
+          res.status(404).json({ message: 'No user found with this ID' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => res.json(err));
   },
 }; //END BRACKET
 
