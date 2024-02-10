@@ -1,4 +1,3 @@
-const { json } = require('express');
 const { Users } = require('../models');
 
 const userControllers = {
@@ -15,8 +14,8 @@ const userControllers = {
         res.status(500).json(err);
       });
   },
-  getOneUser(req, res) {
-    Users.findOne({ _id: req.params.id })
+  getOneUser({ params }, res) {
+    Users.findOne({ _id: params.id })
       //.populate to get entire collection back
       .populate({ path: 'thoughts', select: '__v:0' })
       .populate({ path: 'friends', select: '__v:0' })
