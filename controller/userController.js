@@ -1,3 +1,4 @@
+const { json } = require('express');
 const { Users } = require('../models');
 
 const userControllers = {
@@ -29,6 +30,12 @@ const userControllers = {
         console.log(err);
         res.status(400).json(err);
       });
+  },
+
+  createUser({ body }, res) {
+    Users.create(body)
+      .then((dbUsersData) => res.json(dbUsersData))
+      .catch((err) => res.status(400).json(err));
   },
 }; //END BRACKET
 
