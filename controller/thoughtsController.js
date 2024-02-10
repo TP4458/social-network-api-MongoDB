@@ -31,6 +31,13 @@ const thoughtsControllers = {
         res.status(400).json(err);
       });
   },
+
+  //create new thought
+  newThought({ body }, res) {
+    Thoughts.create(body)
+      .then((dbThoughtsData) => res.json(dbThoughtsData))
+      .catch((err) => res.status(400).json(err));
+  },
 }; //end bracket
 
 module.exports = thoughtsControllers;
