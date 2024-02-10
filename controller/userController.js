@@ -54,6 +54,22 @@ const userControllers = {
       })
       .catch((err) => res.json(err));
   },
+
+  deleteUser({ params }, res) {
+    Users.findOneAndDelete({ _id: params.id })
+      .then((dbUsersData) => {
+        if (!dbUsersData) {
+          res.status(404).json({ message: 'No user found with this ID' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => res.json(err));
+  },
+
+  addFriend({ parms }, res) {},
+
+  deleteFriend({ params }, res) {},
 }; //END BRACKET
 
 module.exports = userControllers;
