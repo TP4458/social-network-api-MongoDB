@@ -4,7 +4,7 @@ const thoughtsControllers = {
   //get all thoughts
   getAllThoughts(req, res) {
     Thoughts.find({})
-      .populate({ path: reactions, select: '-__v' })
+      .populate({ path: 'reactions', select: '-__v' })
       .select('-__v')
       .then((dbThoughtsData) => res.json(dbThoughtsData))
       .catch((err) => {
@@ -17,7 +17,7 @@ const thoughtsControllers = {
 
   getOneThought({ params }, res) {
     Thoughts.findOne({ _id: params.id })
-      .populate({ path: reactions, select: '-__v' })
+      .populate({ path: 'reactions', select: '-__v' })
       .select('-__v')
       .then((dbThoughtsData) => {
         if (!dbThoughtsData) {
@@ -82,7 +82,7 @@ const thoughtsControllers = {
       .catch((err) => res.status(400).json(err));
   },
 
-  addReaction({ params, body }, res) {
+  newReaction({ params, body }, res) {
     Thoughts.findOneAndUpdate(
       //which thought is the reaction for?
       { _id: params.thoughtId },
