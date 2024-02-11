@@ -4,7 +4,7 @@ const thoughtsControllers = {
   //get all thoughts
   getAllThoughts(req, res) {
     Thoughts.find({})
-      .populate({ path: reactions, select: '__v:0' })
+      .populate({ path: reactions, select: '-__v' })
       .select('-__v')
       .then((dbThoughtsData) => res.json(dbThoughtsData))
       .catch((err) => {
@@ -17,7 +17,7 @@ const thoughtsControllers = {
 
   getOneThought({ params }, res) {
     Thoughts.findOne({ _id: params.id })
-      .populate({ path: reactions, select: '__v:0' })
+      .populate({ path: reactions, select: '-__v' })
       .select('-__v')
       .then((dbThoughtsData) => {
         if (!dbThoughtsData) {
@@ -70,8 +70,45 @@ const thoughtsControllers = {
       .catch((err) => res.json(err));
   },
 
-  deteteThought({ params }, res) {
+  deleteThought({ params }, res) {
     Thoughts.findOneAndDelete({ _id: params.id })
+      .then((dbThoughtsData) => {
+        if (!dbThoughtsData) {
+          res.status(404).json({ message: 'no thought found with this ID' });
+          return;
+        }
+        res.json(dbThoughtsData);
+      })
+      .catch((err) => res.status(400).json(err));
+  },
+
+  addReaction({ params, body }, res) {
+    Thoughts.findOneAndUpdate(
+      //which thought is the reaction for?
+      { _id: params.thoughtId },
+      //add reaction body
+      { $push: { reactions: body } },
+      { new: true, runValidators: true }
+    )
+      .populate({ path: 'reactions', select: '-__v' })
+      .select('-__v')
+      .then((dbThoughtsData) => {
+        if (!dbThoughtsData) {
+          res.status(404).json({ message: 'no thought found with this ID' });
+          return;
+        }
+        res.json(dbThoughtsData);
+      })
+      .catch((err) => res.status(400).json(err));
+  },
+
+  // Delete a reaction by ID
+  deleteReaction({ params }, res) {
+    Thoughts.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { new: true }
+    )
       .then((dbThoughtsData) => {
         if (!dbThoughtsData) {
           res.status(404).json({ message: 'no thought found with this ID' });

@@ -5,8 +5,8 @@ const userControllers = {
   getAllUsers(req, res) {
     Users.find({})
       //.populate to get entire collection back
-      .populate({ path: 'thoughts', select: '__v:0' })
-      .populate({ path: 'friends', select: '__v:0' })
+      .populate({ path: 'thoughts', select: '-__v' })
+      .populate({ path: 'friends', select: '-__v' })
       .select('-__v')
       .then((dbUsersData) => res.json(dbUsersData))
       .catch((err) => {
@@ -17,8 +17,8 @@ const userControllers = {
   getOneUser({ params }, res) {
     Users.findOne({ _id: params.id })
       //.populate to get entire collection back
-      .populate({ path: 'thoughts', select: '__v:0' })
-      .populate({ path: 'friends', select: '__v:0' })
+      .populate({ path: 'thoughts', select: '-__v' })
+      .populate({ path: 'friends', select: '-__v' })
       .select('-__v')
       .then((dbUsersData) => {
         if (!dbUsersData) {
@@ -49,7 +49,7 @@ const userControllers = {
           res.status(404).json({ message: 'No user found with this ID' });
           return;
         }
-        res.json(dbUserData);
+        res.json(dbUsersData);
       })
       .catch((err) => res.json(err));
   },
@@ -61,7 +61,7 @@ const userControllers = {
           res.status(404).json({ message: 'No user found with this ID' });
           return;
         }
-        res.json(dbUserData);
+        res.json(dbUsersData);
       })
       .catch((err) => res.json(err));
   },
@@ -79,7 +79,7 @@ const userControllers = {
           res.status(404).json({ message: 'No user found with this ID' });
           return;
         }
-        res.json(dbUserData);
+        res.json(dbUsersData);
       })
       .catch((err) => res.json(err));
   },
