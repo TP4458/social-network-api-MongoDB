@@ -118,6 +118,6 @@ const thoughtsControllers = {
       })
       .catch((err) => res.status(400).json(err));
   },
-}; //end bracket
+};
 
 module.exports = thoughtsControllers;

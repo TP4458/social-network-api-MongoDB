@@ -1,4 +1,4 @@
-const { Users } = require('../models');
+const { Users, Thoughts } = require('../models');
 
 const userControllers = {
   //GET all users:
@@ -16,7 +16,7 @@ const userControllers = {
   },
   getOneUser({ params }, res) {
     Users.findOne({ _id: params.id })
-      //.populate to get entire collection back
+      //.populate to get the entire collection back not only ID
       .populate({ path: 'thoughts', select: '-__v' })
       .populate({ path: 'friends', select: '-__v' })
       .select('-__v')
@@ -101,6 +101,6 @@ const userControllers = {
       })
       .catch((err) => res.status(400).json(err));
   },
-}; //END BRACKET
+};
 
 module.exports = userControllers;

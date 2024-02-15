@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const ReactionsSchema = new Schema(
   {
-    reactionID: {
+    reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
     },
@@ -60,7 +60,7 @@ const ThoughtSchema = new Schema(
 );
 
 //virtual to display reactions count
-ThoughtSchema.virtual('reactionCount').get(function () {
+ThoughtSchema.virtual('reactionsCount').get(function () {
   return this.reactions.length;
 });
 

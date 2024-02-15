@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const { isEmail } = require('validator');
+const Thoughts = require('./Thoughts');
 
 const UserSchema = new Schema(
   {
@@ -14,7 +15,7 @@ const UserSchema = new Schema(
       type: String,
       unique: true,
       required: true,
-      validate: [isEmail, 'Invalid email'],
+      validate: [isEmail, 'Invalid email format.'],
     },
     thoughts: [
       {
@@ -39,7 +40,7 @@ const UserSchema = new Schema(
 );
 
 //virtual to display friend count
-UserSchema.virtual('friendCount').get(function () {
+UserSchema.virtual('friendsCount').get(function () {
   return this.friends.length;
 });
 
